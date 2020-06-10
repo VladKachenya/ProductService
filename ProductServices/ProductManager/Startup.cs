@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using ProductManager.Services;
+using ProductManager.Services.Mongo;
 
 namespace ProductManager
 {
@@ -26,6 +28,8 @@ namespace ProductManager
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddScoped<IProductRepository, MongoProductRepository>();
+            services.AddScoped<MongoDbContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -6,9 +6,9 @@ namespace ProductManager.Services
     public interface IProductRepository
     {
         Task<ProductItem> GetAsync(int productNumber);
-        Task<IReadOnlyCollection<ProductItem>> ListAllAsync();
-        Task<ProductItem> AddAsync(ProductItem entity);
-        Task UpdateAsync(ProductItem entity);
-        Task DeleteAsync(ProductItem entity);
+        Task<List<ProductItem>> ListAllAsync();
+        Task<ProductItem> AddAsync(ProductItem productItem);
+        Task UpdateAsync(ProductItem productItem);
+        Task DeleteAsync(ProductItem productItem);
     }
 }
