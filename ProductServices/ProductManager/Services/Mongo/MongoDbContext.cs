@@ -1,6 +1,7 @@
 ﻿using System.Security.Cryptography.X509Certificates;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
+using ProductManager.Data;
 
 namespace ProductManager.Services.Mongo
 {
@@ -14,6 +15,7 @@ namespace ProductManager.Services.Mongo
             var connection = new MongoUrlBuilder(connectionString);
             _db = (new MongoClient(connectionString)).GetDatabase(connection.DatabaseName);
 
+            // Create unique index
             var productItemBuilder = Builders<ProductItem>.IndexKeys;
             var indexOption = new CreateIndexOptions(){Unique = true};
             var indexModel = new CreateIndexModel<ProductItem>(productItemBuilder.Ascending(x => x.Number), indexOption);

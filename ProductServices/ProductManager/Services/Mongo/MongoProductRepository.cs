@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
+using MongoDB.Bson;
 using MongoDB.Driver;
+using ProductManager.Data;
 
 namespace ProductManager.Services.Mongo
 {
@@ -18,7 +20,8 @@ namespace ProductManager.Services.Mongo
 
         public async Task<ProductItem> GetAsync(int productNumber)
         {
-            throw new System.NotImplementedException();
+           return await _dbContext.Products.Find(GetNumberFilter(productNumber))
+                .FirstOrDefaultAsync();
         }
 
         public async Task<List<ProductItem>> ListAllAsync()
@@ -29,18 +32,28 @@ namespace ProductManager.Services.Mongo
 
         public async Task<ProductItem> AddAsync(ProductItem productItem)
         {
+            if(productItem == null) throw new ArgumentNullException(nameof(productItem));
+
             await _dbContext.Products.InsertOneAsync(productItem);
+            
             return productItem;
         }
 
         public async Task UpdateAsync(ProductItem productItem)
         {
-            throw new System.NotImplementedException();
+            if (productItem == null) throw new ArgumentNullException(nameof(productItem));
+
+            await _dbContext.Products.ReplaceOneAsync(GetNumberFilter(productItem.Number), productItem);
         }
 
-        public async Task DeleteAsync(ProductItem productItem)
+        public async Task DeleteAsync(int productNumber)
         {
-            throw new System.NotImplementedException();
+            await _dbContext.Products.DeleteOneAsync(GetNumberFilter(productNumber));
+        }
+
+        private BsonDocument GetNumberFilter(int productNumber)
+        {
+            return new BsonDocument(Constants.Product.Number, productNumber);
         }
     }
 }

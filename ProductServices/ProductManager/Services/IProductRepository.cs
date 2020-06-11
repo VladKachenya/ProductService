@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using ProductManager.Data;
 
 namespace ProductManager.Services
 {
@@ -9,6 +10,6 @@ namespace ProductManager.Services
         Task<List<ProductItem>> ListAllAsync();
         Task<ProductItem> AddAsync(ProductItem productItem);
         Task UpdateAsync(ProductItem productItem);
-        Task DeleteAsync(ProductItem productItem);
+        Task DeleteAsync(int productNumber);
     }
 }

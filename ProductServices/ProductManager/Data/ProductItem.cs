@@ -1,12 +1,12 @@
-using System;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace ProductManager
+namespace ProductManager.Data
 {
     public class ProductItem
     {
         [BsonId]
+        [BsonIgnoreIfDefault]
         public ObjectId Id { get; set; }
         public int Number { get; set; }
 
