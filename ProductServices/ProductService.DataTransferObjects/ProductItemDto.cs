@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ProductService.DataTransferObjects
+﻿namespace ProductService.DataTransferObjects
 {
     public class ProductItemDto
     {

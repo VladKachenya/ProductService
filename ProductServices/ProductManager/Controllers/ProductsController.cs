@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using ProductManager.Data;
 using ProductManager.Services;
@@ -44,6 +42,7 @@ namespace ProductManager.Controllers
         [HttpPut]
         public async Task<ActionResult> UpdateProductItem(ProductItemDto productItem)
         {
+            UpdateState(productItem);
             await _productRepository.UpdateAsync(_dataMapper.ToProductItem(productItem));
             return NoContent();
         }
@@ -51,6 +50,7 @@ namespace ProductManager.Controllers
         [HttpPost]
         public async Task<ActionResult<ProductItemDto>> CreateProductItem(ProductItemDto productItem)
         {
+            UpdateState(productItem);
             await _productRepository.AddAsync(_dataMapper.ToProductItem(productItem));
             return productItem;
         }
@@ -60,6 +60,24 @@ namespace ProductManager.Controllers
         {
             await _productRepository.DeleteAsync(number);
             return NoContent();
+        }
+
+        //For this needs refactoring
+        private void UpdateState(ProductItemDto productItemDto)
+        {
+            var middleQty = productItemDto.MinQuantity * 1.2;
+            if (productItemDto.Quantity > middleQty)
+            {
+                productItemDto.State = 0;
+            }
+            else if (productItemDto.Quantity < middleQty && productItemDto.Quantity > productItemDto.MinQuantity)
+            {
+                productItemDto.State = 1;
+            }
+            else
+            {
+                productItemDto.State = 2;
+            }
         }
     }
 }

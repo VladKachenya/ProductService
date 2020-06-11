@@ -23,8 +23,8 @@ namespace ProductManager.Data
 
     public enum Status
     {
-        Enough,
-        Min,
-        Finish
+        Many,
+        Middle,
+        Min
     }
 }
