@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ProductManager.Data;
 using ProductManager.Services;
-using ProductService.DataTransferObjects;
 
 namespace ProductManager.Controllers
 {
@@ -16,67 +15,73 @@ namespace ProductManager.Controllers
         private readonly ILogger<ProductsController> _logger;
         private readonly DataMapper _dataMapper;
         private readonly IProductRepository _productRepository;
+        private readonly IProductChangesPublisher _productChangesPublisher;
 
         public ProductsController(
             ILogger<ProductsController> logger,
             DataMapper dataMapper,
-            IProductRepository productRepository)
+            IProductRepository productRepository,
+            IProductChangesPublisher productChangesPublisher)
         {
             _logger = logger;
             _dataMapper = dataMapper;
             _productRepository = productRepository;
+            _productChangesPublisher = productChangesPublisher;
         }
 
         [HttpGet("{number}")]
-        public async Task<ActionResult<ProductItemDto>> GetProductItem(int number)
+        public async Task<ActionResult<ProductDto>> GetProduct(int number)
         {
-            return _dataMapper.ToProductItemDto(await _productRepository.GetAsync(number));
+            return _dataMapper.ToProductDto(await _productRepository.GetAsync(number));
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductItemDto>>> GetProducts()
+        public async Task<ActionResult<IEnumerable<ProductDto>>> GetProducts()
         {
-            return (await _productRepository.ListAllAsync()).Select(pi => _dataMapper.ToProductItemDto(pi)).ToList();
+            //await _productChangesPublisher.Publish(null, null);
+            return (await _productRepository.ListAllAsync()).Select(pi => _dataMapper.ToProductDto(pi)).ToList();
         }
 
         [HttpPut]
-        public async Task<ActionResult> UpdateProductItem(ProductItemDto productItem)
+        public async Task<ActionResult<ProductDto>> UpdateProduct(ProductDto product)
         {
-            UpdateState(productItem);
-            await _productRepository.UpdateAsync(_dataMapper.ToProductItem(productItem));
-            return NoContent();
+            UpdateState(product);
+            var prevProduct = _dataMapper.ToProductDto(await _productRepository.GetAsync(product.Number));
+            await _productRepository.UpdateAsync(_dataMapper.ToProduct(product));
+            _productChangesPublisher.Publish(prevProduct, product);
+            return product;
         }
 
         [HttpPost]
-        public async Task<ActionResult<ProductItemDto>> CreateProductItem(ProductItemDto productItem)
+        public async Task<ActionResult<ProductDto>> CreateProduct(ProductDto product)
         {
-            UpdateState(productItem);
-            await _productRepository.AddAsync(_dataMapper.ToProductItem(productItem));
-            return productItem;
+            UpdateState(product);
+            await _productRepository.AddAsync(_dataMapper.ToProduct(product));
+            return product;
         }
 
         [HttpDelete("{number}")]
-        public async Task<ActionResult> DeleteProductItem(int number)
+        public async Task<ActionResult> DeleteProduct(int number)
         {
             await _productRepository.DeleteAsync(number);
             return NoContent();
         }
 
         //For this needs refactoring
-        private void UpdateState(ProductItemDto productItemDto)
+        private void UpdateState(ProductDto productDto)
         {
-            var middleQty = productItemDto.MinQuantity * 1.2;
-            if (productItemDto.Quantity > middleQty)
+            var middleQty = productDto.MinQty * 1.2;
+            if (productDto.Qty > middleQty)
             {
-                productItemDto.State = 0;
+                productDto.State = 0;
             }
-            else if (productItemDto.Quantity < middleQty && productItemDto.Quantity > productItemDto.MinQuantity)
+            else if (productDto.Qty < middleQty && productDto.Qty > productDto.MinQty)
             {
-                productItemDto.State = 1;
+                productDto.State = 1;
             }
             else
             {
-                productItemDto.State = 2;
+                productDto.State = 2;
             }
         }
     }

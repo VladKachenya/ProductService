@@ -6,10 +6,10 @@ namespace ProductManager.Services
 {
     public interface IProductRepository
     {
-        Task<ProductItem> GetAsync(int productNumber);
-        Task<List<ProductItem>> ListAllAsync();
-        Task<ProductItem> AddAsync(ProductItem productItem);
-        Task UpdateAsync(ProductItem productItem);
+        Task<Product> GetAsync(int productNumber);
+        Task<List<Product>> ListAllAsync();
+        Task<Product> AddAsync(Product product);
+        Task UpdateAsync(Product product);
         Task DeleteAsync(int productNumber);
     }
 }

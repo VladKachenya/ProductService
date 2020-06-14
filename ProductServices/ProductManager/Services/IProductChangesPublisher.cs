@@ -5,6 +5,6 @@ namespace ProductManager.Services
 {
     public interface IProductChangesPublisher
     {
-        Task Publish(ProductItem preview, ProductItem current);
+        void Publish(ProductDto preview, ProductDto current);
     }
 }

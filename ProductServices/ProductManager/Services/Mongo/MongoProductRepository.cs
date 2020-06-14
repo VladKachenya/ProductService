@@ -18,32 +18,32 @@ namespace ProductManager.Services.Mongo
         }
 
 
-        public async Task<ProductItem> GetAsync(int productNumber)
+        public async Task<Product> GetAsync(int productNumber)
         {
            return await _dbContext.Products.Find(GetNumberFilter(productNumber))
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<List<ProductItem>> ListAllAsync()
+        public async Task<List<Product>> ListAllAsync()
         {
-            var res = await _dbContext.Products.Find(new FilterDefinitionBuilder<ProductItem>().Empty).ToListAsync();
+            var res = await _dbContext.Products.Find(new FilterDefinitionBuilder<Product>().Empty).ToListAsync();
             return res;
         }
 
-        public async Task<ProductItem> AddAsync(ProductItem productItem)
+        public async Task<Product> AddAsync(Product product)
         {
-            if(productItem == null) throw new ArgumentNullException(nameof(productItem));
+            if(product == null) throw new ArgumentNullException(nameof(product));
 
-            await _dbContext.Products.InsertOneAsync(productItem);
+            await _dbContext.Products.InsertOneAsync(product);
             
-            return productItem;
+            return product;
         }
 
-        public async Task UpdateAsync(ProductItem productItem)
+        public async Task UpdateAsync(Product product)
         {
-            if (productItem == null) throw new ArgumentNullException(nameof(productItem));
+            if (product == null) throw new ArgumentNullException(nameof(product));
 
-            await _dbContext.Products.ReplaceOneAsync(GetNumberFilter(productItem.Number), productItem);
+            await _dbContext.Products.ReplaceOneAsync(GetNumberFilter(product.Number), product);
         }
 
         public async Task DeleteAsync(int productNumber)

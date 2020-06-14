@@ -16,12 +16,12 @@ namespace ProductManager.Services.Mongo
             _db = (new MongoClient(connectionString)).GetDatabase(connection.DatabaseName);
 
             // Create unique index
-            var productItemBuilder = Builders<ProductItem>.IndexKeys;
+            var productItemBuilder = Builders<Product>.IndexKeys;
             var indexOption = new CreateIndexOptions(){Unique = true};
-            var indexModel = new CreateIndexModel<ProductItem>(productItemBuilder.Ascending(x => x.Number), indexOption);
+            var indexModel = new CreateIndexModel<Product>(productItemBuilder.Ascending(x => x.Number), indexOption);
             Products.Indexes.CreateOne(indexModel);
         }
 
-        public IMongoCollection<ProductItem> Products => _db.GetCollection<ProductItem>("products");
+        public IMongoCollection<Product> Products => _db.GetCollection<Product>("products");
     }
 }

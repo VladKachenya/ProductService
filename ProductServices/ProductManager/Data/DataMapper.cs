@@ -1,34 +1,28 @@
-﻿using ProductService.DataTransferObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace ProductManager.Data
+﻿namespace ProductManager.Data
 {
     public class DataMapper
     {
-        public ProductItem ToProductItem(ProductItemDto productItemDto)
+        public Product ToProduct(ProductDto productDto)
         {
-            return new ProductItem
+            return new Product
             {
-                Number = productItemDto.Number,
-                MinQuantity = productItemDto.MinQuantity,
-                Category = productItemDto.Category,
-                State = (Status)productItemDto.State,
-                Quantity = productItemDto.Quantity
+                Number = productDto.Number,
+                MinQty = productDto.MinQty,
+                Category = productDto.Category,
+                State = (Status)productDto.State,
+                Qty = productDto.Qty
             };
         }
 
-        public ProductItemDto ToProductItemDto(ProductItem productItem)
+        public ProductDto ToProductDto(Product product)
         {
-            return new ProductItemDto
+            return new ProductDto
             {
-                Number = productItem.Number,
-                MinQuantity = productItem.MinQuantity,
-                Category = productItem.Category,
-                State = (int)productItem.State,
-                Quantity = productItem.Quantity
+                Number = product.Number,
+                MinQty = product.MinQty,
+                Category = product.Category,
+                State = (int)product.State,
+                Qty = product.Qty
             };
         }
     }

@@ -3,18 +3,16 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace ProductManager.Data
 {
-    public class ProductItem
+    public class Product
     {
         [BsonId]
         [BsonIgnoreIfDefault]
         public ObjectId Id { get; set; }
         public int Number { get; set; }
 
-        [BsonElement("Qty")]
-        public int Quantity { get; set; }
+        public int Qty { get; set; }
 
-        [BsonElement("MinQty")]
-        public int MinQuantity { get; set; }
+        public int MinQty { get; set; }
 
         public Status State { get; set; }
 

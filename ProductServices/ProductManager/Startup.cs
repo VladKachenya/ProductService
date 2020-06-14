@@ -23,6 +23,7 @@ namespace ProductManager
         {
             services.AddControllers();
             services.AddScoped<IProductRepository, MongoProductRepository>();
+            services.AddScoped<IProductChangesPublisher, ProductChangesPublisher>();
             services.AddScoped<MongoDbContext>();
             services.AddScoped<DataMapper>();
         }
