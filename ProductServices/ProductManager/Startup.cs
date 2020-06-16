@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using ProductManager.Data;
 using ProductManager.Services;
 using ProductManager.Services.Mongo;
+using ProductService.DataTransfer.Client.Factories;
 
 namespace ProductManager
 {
@@ -24,6 +25,7 @@ namespace ProductManager
             services.AddControllers();
             services.AddScoped<IProductRepository, MongoProductRepository>();
             services.AddScoped<IProductChangesPublisher, ProductChangesPublisher>();
+            services.AddScoped<IChannelFactory, ChannelFactory>();
             services.AddScoped<MongoDbContext>();
             services.AddScoped<DataMapper>();
         }

@@ -11,15 +11,15 @@ namespace ProductService.DataTransfer.Client.Factories
         {
             return FormRouteKey(productChange.GetQtyChangeType().ToString(), 
                 productChange.GetStateChangeType().ToString(), 
-                productChange.Number.ToString());
+                productChange.Category.ToString());
         }
 
         public IEnumerable<string>GetBindingKeys(ProductChangesFilter productChangesFilter)
         {
             var qtyKeys = GetKeys(productChangesFilter.QtyChanges);
             var stateKeys = GetKeys(productChangesFilter.StateChanges);
-            var productNumbersKeys = productChangesFilter.ProductNumbers.Count != 0 ? 
-                productChangesFilter.ProductNumbers.Select(i => i.ToString()).ToList() : 
+            var productNumbersKeys = productChangesFilter.ProductCategories.Count != 0 ? 
+                productChangesFilter.ProductCategories.Select(i => i.ToString()).ToList() : 
                 new List<string>{"*"};
 
             var res = new List<string>();
@@ -42,7 +42,6 @@ namespace ProductService.DataTransfer.Client.Factories
             return $"{qty}.{state}.{number}";
         }
 
-        //
         private List<string> GetKeys(ChangeType changeType)
         {
             var res = new List<string>();

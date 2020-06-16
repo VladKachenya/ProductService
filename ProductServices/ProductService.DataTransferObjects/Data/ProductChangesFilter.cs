@@ -6,10 +6,10 @@ namespace ProductService.DataTransfer.Data
     {
         public ProductChangesFilter()
         {
-            ProductNumbers = new List<int>();
+            ProductCategories = new List<int>();
         }
         public ChangeType QtyChanges { get; set; }
         public ChangeType StateChanges { get; set; }
-        public List<int> ProductNumbers { get; }
+        public List<int> ProductCategories { get; }
     }
 }
