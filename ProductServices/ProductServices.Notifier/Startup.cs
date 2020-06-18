@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -20,7 +16,18 @@ namespace ProductServices.Notifier
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSignalR();
+            services.AddSignalR().AddJsonProtocol(options =>
+            {
+                options.PayloadSerializerOptions.PropertyNamingPolicy = null;
+            });
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAny", builder => builder
+                    .AllowCredentials()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .SetIsOriginAllowed(origin => true));
+            });
             services.AddTransient<IChannelFactory, ChannelFactory>();
             services.AddSingleton<IListenerManager, ListenerManager>();
             services.AddScoped<DataMapper>();
@@ -34,6 +41,8 @@ namespace ProductServices.Notifier
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors("AllowAny");
 
             app.UseDefaultFiles();
             app.UseStaticFiles();

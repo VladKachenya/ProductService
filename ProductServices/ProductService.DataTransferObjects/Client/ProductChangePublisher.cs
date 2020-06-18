@@ -11,9 +11,9 @@ namespace ProductService.DataTransfer.Client
             :base(exchangeName, rabbitConnectionString)
         {
         }
-        public void Publish(ProductChange productChange)
+        public void Publish(ProductChanges productChanges)
         {
-            if (productChange == null) throw new ArgumentNullException(nameof(productChange));
+            if (productChanges == null) throw new ArgumentNullException(nameof(productChanges));
 
 
                 using var connection = _connectionFactory.CreateConnection();
@@ -22,12 +22,12 @@ namespace ProductService.DataTransfer.Client
                 try
                 {
                     channel.ExchangeDeclare(_exchangeName, _exchangeType);
-                    var routingKey = _routingKeyFactory.GetPublicationKey(productChange);
+                    var routingKey = _routingKeyFactory.GetPublicationKey(productChanges);
                     channel.BasicPublish(
                         exchange: _exchangeName,
                         routingKey: routingKey,
                         basicProperties: null,
-                        body: _dataSerializer.ToBson(productChange));
+                        body: _dataSerializer.ToBson(productChanges));
                 }
                 finally
                 {

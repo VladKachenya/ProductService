@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
-using ProductService.DataTransfer.Client;
-using ProductService.DataTransfer.Data;
 using ProductServices.Notifier.Data;
 using ProductServices.Notifier.System;
 
@@ -23,13 +21,16 @@ namespace ProductServices.Notifier.Hubs
             _notificationHelper = notificationHelper;
             _dataMapper = dataMapper;
         }
-        public void SetFilter(ProductChangesFilterDto filterDto)
+
+        [HubMethodName("set_filter")]
+        public void SetFilter(ProductChangesFilterDto filterMassage)
         {
-            var filterModel = _dataMapper.ToProduct(filterDto);
+            var filterModel = _dataMapper.ToProductChangesFilter(filterMassage);
             var listener = _listenerManager.GetListener(this.Context.ConnectionId);
             listener.Configure(filterModel);
             _notificationHelper.SetProductChangesNotification(this.Context.ConnectionId, listener);
         }
+
 
         public override Task OnConnectedAsync()
         {

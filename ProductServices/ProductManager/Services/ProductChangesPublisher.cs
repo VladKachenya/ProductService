@@ -13,7 +13,7 @@ namespace ProductManager.Services
     {
         private readonly IChannelFactory _channelFactory;
 
-        private Func<ProductDto, ProductDto, ProductChange> _productChangeFactory => (p, c) => new ProductChange
+        private Func<ProductDto, ProductDto, ProductChanges> _productChangeFactory => (p, c) => new ProductChanges
         {
             Number = c.Number,
             State = c.State,

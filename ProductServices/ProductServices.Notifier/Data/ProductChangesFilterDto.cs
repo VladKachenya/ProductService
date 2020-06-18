@@ -1,11 +1,14 @@
 ﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace ProductServices.Notifier.Data
 {
     public class ProductChangesFilterDto
     {
-        public IEnumerable<string> QtyCh { get; set; }
-        public IEnumerable<string> StateCh { get; set; }
-        public IEnumerable<int> Categories { get; set; }
+        public List<string> QtyCh { get; set; }
+
+        public List<string> StateCh { get; set; }
+
+        public List<int> Categories { get; set; }
     }
 }

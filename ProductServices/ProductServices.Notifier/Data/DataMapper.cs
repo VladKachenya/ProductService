@@ -8,7 +8,7 @@ namespace ProductServices.Notifier.Data
 {
     public class DataMapper
     {
-        public ProductChangesFilter ToProduct(ProductChangesFilterDto changesFilterDto)
+        public ProductChangesFilter ToProductChangesFilter(ProductChangesFilterDto changesFilterDto)
         {
             var res = new ProductChangesFilter();
             changesFilterDto.Categories ??= new List<int>();
@@ -28,6 +28,19 @@ namespace ProductServices.Notifier.Data
             res.StateChanges = ToChangeType(changesFilterDto.StateCh);
 
             return res;
+        }
+
+        public ProductChangesDto ToProductChangesDto(ProductChanges productChanges)
+        {
+
+            return new ProductChangesDto
+            {
+                Qty = productChanges.Qty,
+                State = productChanges.State,
+                Number = productChanges.Number,
+                PrevQty = productChanges.PrevQty,
+                PrevState = productChanges.PrevState
+            };
         }
 
         private ChangeType ToChangeType(IEnumerable<string> changes)

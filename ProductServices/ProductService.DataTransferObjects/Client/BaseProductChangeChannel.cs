@@ -13,7 +13,7 @@ namespace ProductService.DataTransfer.Client
         protected readonly string _exchangeName;
         protected readonly ConnectionFactory _connectionFactory;
         protected readonly string _exchangeType = ExchangeType.Topic;
-        protected readonly DataSerializer<ProductChange> _dataSerializer;
+        protected readonly DataSerializer<ProductChanges> _dataSerializer;
         protected readonly RoutingKeyFactory _routingKeyFactory;
 
 
@@ -26,7 +26,7 @@ namespace ProductService.DataTransfer.Client
                 _connectionFactory.Uri = new Uri(rabbitConnectionString);
             }
             _routingKeyFactory = new RoutingKeyFactory();
-            _dataSerializer = new DataSerializer<ProductChange>();
+            _dataSerializer = new DataSerializer<ProductChanges>();
         }
     }
 }

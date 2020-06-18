@@ -2,7 +2,7 @@
 
 namespace ProductService.DataTransfer.Data
 {
-    public class ProductChange
+    public class ProductChanges
     {
         public int Number { get; set; }
         public int Category { get; set; }

@@ -7,11 +7,11 @@ namespace ProductService.DataTransfer.Client.Factories
 {
     public class RoutingKeyFactory
     {
-        public string GetPublicationKey(ProductChange productChange)
+        public string GetPublicationKey(ProductChanges productChanges)
         {
-            return FormRouteKey(productChange.GetQtyChangeType().ToString(), 
-                productChange.GetStateChangeType().ToString(), 
-                productChange.Category.ToString());
+            return FormRouteKey(productChanges.GetQtyChangeType().ToString(), 
+                productChanges.GetStateChangeType().ToString(), 
+                productChanges.Category.ToString());
         }
 
         public IEnumerable<string>GetBindingKeys(ProductChangesFilter productChangesFilter)
