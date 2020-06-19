@@ -15,7 +15,7 @@ namespace ProductServices.Notifier.System
     {
         private readonly IChannelFactory _channelFactory;
         private readonly IHubContext<ProductChangesHub> _context;
-        private static readonly Dictionary<string, IListener> Listeners = new Dictionary<string, IListener>();
+        private readonly Dictionary<string, IListener> _listeners = new Dictionary<string, IListener>();
 
         public ListenerManager(
             IChannelFactory channelFactory,
@@ -30,34 +30,34 @@ namespace ProductServices.Notifier.System
 
         public void Create(string connectionId)
         {
-            lock (Listeners)
+            lock (_listeners)
             {
-                if (!Listeners.ContainsKey(connectionId))
+                if (!_listeners.ContainsKey(connectionId))
                 {
-                    Listeners.Add(connectionId, _channelFactory.CreateListener());
+                    _listeners.Add(connectionId, _channelFactory.CreateListener());
                 }
             }
         }
 
         public void Remove(string connectionId)
         {
-            lock (Listeners)
+            lock (_listeners)
             {
-                if (Listeners.ContainsKey(connectionId))
+                if (_listeners.ContainsKey(connectionId))
                 {
-                    Listeners[connectionId].Close();
-                    Listeners.Remove(connectionId);
+                    _listeners[connectionId].Close();
+                    _listeners.Remove(connectionId);
                 }
             }
         }
 
         public IListener GetListener(string connectionId)
         {
-            lock (Listeners)
+            lock (_listeners)
             {
-                if (Listeners.ContainsKey(connectionId))
+                if (_listeners.ContainsKey(connectionId))
                 {
-                    return Listeners[connectionId];
+                    return _listeners[connectionId];
                 }
                 return null;
             }
