@@ -4,8 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
-using ProductService.DataTransfer.Client;
-using ProductService.DataTransfer.Client.Factories;
+using ProductService.DataTransfer.Channel;
+using ProductService.DataTransfer.Channel.Factories;
 using ProductServices.Notifier.Hubs;
 
 namespace ProductServices.Notifier.System

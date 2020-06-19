@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -12,17 +14,20 @@ namespace ProductManager.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
+        private readonly IProductService _productService;
         private readonly ILogger<ProductsController> _logger;
         private readonly DataMapper _dataMapper;
         private readonly IProductRepository _productRepository;
         private readonly IProductChangesPublisher _productChangesPublisher;
 
         public ProductsController(
+            IProductService productService,
             ILogger<ProductsController> logger,
             DataMapper dataMapper,
             IProductRepository productRepository,
             IProductChangesPublisher productChangesPublisher)
         {
+            _productService = productService;
             _logger = logger;
             _dataMapper = dataMapper;
             _productRepository = productRepository;
@@ -32,56 +37,96 @@ namespace ProductManager.Controllers
         [HttpGet("{number}")]
         public async Task<ActionResult<ProductDto>> GetProduct(int number)
         {
-            return _dataMapper.ToProductDto(await _productRepository.GetAsync(number));
+            try
+            {
+                if (number < 0)
+                {
+                    return BadRequest(nameof(number));
+                }
+                var product = await _productRepository.GetAsync(number);
+                if (product == null)
+                {
+                    return NotFound();
+                }
+                return Ok(_dataMapper.ToProductDto(product));
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(new EventId(), exception: e, "LogError {0}", Request.Path);
+                return StatusCode((int)HttpStatusCode.InternalServerError);
+            }
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductDto>>> GetProducts()
         {
-            //await _productChangesPublisher.Publish(null, null);
-            return (await _productRepository.ListAllAsync()).Select(pi => _dataMapper.ToProductDto(pi)).ToList();
+            try
+            {
+                return Ok((await _productRepository.ListAllAsync()).Select(pi => _dataMapper.ToProductDto(pi)).ToList());
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(new EventId(), exception: e, "LogError {0}", Request.Path);
+                return StatusCode((int)HttpStatusCode.InternalServerError);
+            }
         }
 
         [HttpPut]
-        public async Task<ActionResult<ProductDto>> UpdateProduct(ProductDto product)
+        public async Task<ActionResult<ProductDto>> UpdateProduct(ProductDto productDto)
         {
-            UpdateState(product);
-            var prevProduct = _dataMapper.ToProductDto(await _productRepository.GetAsync(product.Number));
-            await _productRepository.UpdateAsync(_dataMapper.ToProduct(product));
-            _productChangesPublisher.Publish(prevProduct, product);
-            return product;
+            try
+            {
+                _productService.UpdateState(productDto);
+                var prevProduct = await _productRepository.GetAsync(productDto.Number);
+                if (prevProduct == null)
+                {
+                    return NotFound();
+                }
+                var prevProductDto = _dataMapper.ToProductDto(prevProduct);
+                await _productRepository.UpdateAsync(_dataMapper.ToProduct(productDto));
+                _productChangesPublisher.Publish(prevProductDto, productDto);
+                return Ok(productDto);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(new EventId(), exception: e, "LogError {0}", Request.Path);
+                return StatusCode((int)HttpStatusCode.InternalServerError);
+            }
         }
 
         [HttpPost]
         public async Task<ActionResult<ProductDto>> CreateProduct(ProductDto product)
         {
-            UpdateState(product);
-            await _productRepository.AddAsync(_dataMapper.ToProduct(product));
-            return product;
+            try
+            {
+                _productService.UpdateState(product);
+                await _productRepository.AddAsync(_dataMapper.ToProduct(product));
+                Response.StatusCode = (int) HttpStatusCode.Created;
+                return product;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(new EventId(), exception: e, "LogError {0}", Request.Path);
+                return StatusCode((int)HttpStatusCode.InternalServerError);
+            }
         }
 
         [HttpDelete("{number}")]
         public async Task<ActionResult> DeleteProduct(int number)
         {
-            await _productRepository.DeleteAsync(number);
-            return NoContent();
-        }
-
-        //For this needs refactoring
-        private void UpdateState(ProductDto productDto)
-        {
-            var middleQty = productDto.MinQty * 1.2;
-            if (productDto.Qty > middleQty)
+            try
             {
-                productDto.State = 0;
+                if (number < 0)
+                {
+                    return BadRequest(nameof(number));
+                }
+                await _productRepository.DeleteAsync(number);
+                return NoContent();
             }
-            else if (productDto.Qty < middleQty && productDto.Qty > productDto.MinQty)
+            catch (Exception e)
             {
-                productDto.State = 1;
-            }
-            else
-            {
-                productDto.State = 2;
+                _logger.LogError(new EventId(), exception: e, "LogError {0}", Request.Path);
+                return StatusCode((int)HttpStatusCode.InternalServerError);
             }
         }
     }

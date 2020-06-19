@@ -1,9 +1,10 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using ProductService.DataTransfer.Client.Factories;
+using ProductService.DataTransfer.Channel.Factories;
 using ProductServices.Notifier.Data;
 using ProductServices.Notifier.Hubs;
 using ProductServices.Notifier.System;
@@ -16,13 +17,16 @@ namespace ProductServices.Notifier
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSignalR().AddJsonProtocol(options =>
+            services.AddSignalR(hubOptions =>
+            {
+                hubOptions.EnableDetailedErrors = true;
+            }).AddJsonProtocol(options =>
             {
                 options.PayloadSerializerOptions.PropertyNamingPolicy = null;
             });
             services.AddCors(options =>
             {
-                options.AddPolicy("AllowAny", builder => builder
+                options.AddPolicy( Constants.AllowAnyCrosPolicy, builder => builder
                     .AllowCredentials()
                     .AllowAnyHeader()
                     .AllowAnyMethod()
@@ -42,7 +46,7 @@ namespace ProductServices.Notifier
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors("AllowAny");
+            app.UseCors(Constants.AllowAnyCrosPolicy);
 
             app.UseDefaultFiles();
             app.UseStaticFiles();

@@ -2,7 +2,7 @@
 using ProductService.DataTransfer.Data;
 using RabbitMQ.Client;
 
-namespace ProductService.DataTransfer.Client
+namespace ProductService.DataTransfer.Channel
 {
     internal class ProductChangePublisher : BaseProductChangeChannel, IPublisher
     {

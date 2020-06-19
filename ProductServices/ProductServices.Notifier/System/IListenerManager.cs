@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ProductService.DataTransfer.Client;
+using ProductService.DataTransfer.Channel;
 
 namespace ProductServices.Notifier.System
 {

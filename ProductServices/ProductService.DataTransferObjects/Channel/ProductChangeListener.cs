@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Threading.Tasks;
 using ProductService.DataTransfer.Data;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
-namespace ProductService.DataTransfer.Client
+namespace ProductService.DataTransfer.Channel
 {
     internal class ProductChangeListener : BaseProductChangeChannel, IListener
     {
@@ -30,25 +31,26 @@ namespace ProductService.DataTransfer.Client
 
             foreach (var routingKey in routingKeys)
             {
-                _channel.QueueBind(queue: _queueName,
+                _channel.QueueBind(
+                    queue: _queueName,
                     exchange: _exchangeName,
                     routingKey: routingKey);
             }
         }
 
-        public void Subscribe(Action<ProductChanges> action)
+        public void Subscribe(Func<ProductChanges, Task> action)
         {
             if (action == null) throw new ArgumentNullException(nameof(action));
             if (_queueName == null) throw new InvalidOperationException("The channel was not configured");
 
 
-            var consumer = new EventingBasicConsumer(_channel);
+            var consumer = new AsyncEventingBasicConsumer(_channel);
 
-            consumer.Received += (model, ea) =>
+            consumer.Received += async (model, ea) =>
             {
                 var body = ea.Body.ToArray();
                 var changes = _dataSerializer.FromBson(body);
-                action(changes);
+                await action(changes);
             };
 
             _channel.BasicConsume(

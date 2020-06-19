@@ -1,4 +1,4 @@
-﻿namespace ProductService.DataTransfer.Client.Factories
+﻿namespace ProductService.DataTransfer.Channel.Factories
 {
     public interface IChannelFactory
     {

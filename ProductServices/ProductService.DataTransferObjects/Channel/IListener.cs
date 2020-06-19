@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Threading.Tasks;
 using ProductService.DataTransfer.Data;
 
-namespace ProductService.DataTransfer.Client
+namespace ProductService.DataTransfer.Channel
 {
     public interface IListener
     {
         void Configure(ProductChangesFilter changesFilter);
-        void Subscribe(Action<ProductChanges> action);
+        void Subscribe(Func<ProductChanges, Task> action);
         void Close();
     }
 }

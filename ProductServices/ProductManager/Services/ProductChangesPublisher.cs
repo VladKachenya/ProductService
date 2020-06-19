@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using ProductManager.Data;
-using ProductService.DataTransfer.Client;
-using ProductService.DataTransfer.Client.Factories;
+using ProductService.DataTransfer.Channel;
+using ProductService.DataTransfer.Channel.Factories;
 using ProductService.DataTransfer.Data;
 using RabbitMQ.Client;
 

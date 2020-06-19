@@ -38,6 +38,10 @@ class Chat extends Component {
       });
   };
 
+  componentWillUnmount = () => {
+    this.state.hubConnection.stop();
+  }
+
   postFilter = (e) => {
     const {QtyCh, StateCh, Categories} = this.state;
     this.state.hubConnection

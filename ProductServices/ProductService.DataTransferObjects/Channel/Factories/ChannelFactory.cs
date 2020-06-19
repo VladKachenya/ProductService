@@ -1,7 +1,7 @@
 ﻿using ProductService.DataTransfer.Data;
 using RabbitMQ.Client;
 
-namespace ProductService.DataTransfer.Client.Factories
+namespace ProductService.DataTransfer.Channel.Factories
 {
     public class ChannelFactory : IChannelFactory
     {

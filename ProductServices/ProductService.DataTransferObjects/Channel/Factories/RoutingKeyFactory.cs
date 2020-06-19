@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ProductService.DataTransfer.Data;
 
-namespace ProductService.DataTransfer.Client.Factories
+namespace ProductService.DataTransfer.Channel.Factories
 {
     public class RoutingKeyFactory
     {

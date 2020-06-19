@@ -7,7 +7,7 @@ using Microsoft.OpenApi.Models;
 using ProductManager.Data;
 using ProductManager.Services;
 using ProductManager.Services.Mongo;
-using ProductService.DataTransfer.Client.Factories;
+using ProductService.DataTransfer.Channel.Factories;
 
 namespace ProductManager
 {
@@ -31,6 +31,7 @@ namespace ProductManager
             services.AddScoped<IProductRepository, MongoProductRepository>();
             services.AddScoped<IProductChangesPublisher, ProductChangesPublisher>();
             services.AddScoped<IChannelFactory, ChannelFactory>();
+            services.AddScoped<IProductService, Services.ProductService>();
             services.AddScoped<MongoDbContext>();
             services.AddScoped<DataMapper>();
         }

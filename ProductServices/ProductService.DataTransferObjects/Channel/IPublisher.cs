@@ -1,6 +1,6 @@
 ﻿using ProductService.DataTransfer.Data;
 
-namespace ProductService.DataTransfer.Client
+namespace ProductService.DataTransfer.Channel
 {
     public interface IPublisher
     {

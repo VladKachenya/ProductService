@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
-using ProductService.DataTransfer.Client.Factories;
+using ProductService.DataTransfer.Channel.Factories;
 using ProductService.DataTransfer.Data;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
-namespace ProductService.DataTransfer.Client
+namespace ProductService.DataTransfer.Channel
 {
     internal abstract class BaseProductChangeChannel 
     {

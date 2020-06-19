@@ -32,7 +32,7 @@ namespace ProductServices.Notifier.Data
 
         public ProductChangesDto ToProductChangesDto(ProductChanges productChanges)
         {
-
+            if(productChanges == null) throw new ArgumentNullException(nameof(productChanges));
             return new ProductChangesDto
             {
                 Qty = productChanges.Qty,
