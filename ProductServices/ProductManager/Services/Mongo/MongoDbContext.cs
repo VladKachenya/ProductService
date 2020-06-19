@@ -11,7 +11,7 @@ namespace ProductManager.Services.Mongo
 
         public MongoDbContext(IConfiguration configuration)
         {
-            var connectionString = configuration.GetSection("ConnectionStrings").GetSection(Constants.MongoDb).Value;
+            var connectionString = configuration.GetSection("MongoConnectionStrings").GetSection(Constants.ConnectionString).Value;
             var connection = new MongoUrlBuilder(connectionString);
             _db = (new MongoClient(connectionString)).GetDatabase(connection.DatabaseName);
 

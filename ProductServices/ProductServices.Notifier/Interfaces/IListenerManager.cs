@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ProductService.DataTransfer.Channel;
+﻿using ProductService.DataTransfer.Channel;
 
-namespace ProductServices.Notifier.System
+namespace ProductServices.Notifier.Interfaces
 {
     public interface IListenerManager
     {

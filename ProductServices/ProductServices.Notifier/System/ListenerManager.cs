@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using ProductService.DataTransfer.Channel;
 using ProductService.DataTransfer.Channel.Factories;
 using ProductServices.Notifier.Hubs;
+using ProductServices.Notifier.Interfaces;
 
 namespace ProductServices.Notifier.System
 {
@@ -22,6 +23,8 @@ namespace ProductServices.Notifier.System
             IConfiguration configuration)
         {
             _channelFactory = channelFactory;
+            _channelFactory.ConnectionString = configuration.GetSection("RabbitConnectionStrings").GetSection(Constants.ConnectionString).Value;
+            _channelFactory.ChannelName = configuration.GetSection("RabbitConnectionStrings").GetSection(Constants.ExchangeName).Value;
             _context = context;
         }
 

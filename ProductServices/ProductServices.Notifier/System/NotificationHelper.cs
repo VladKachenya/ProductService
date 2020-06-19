@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using ProductService.DataTransfer.Channel;
 using ProductServices.Notifier.Data;
 using ProductServices.Notifier.Hubs;
+using ProductServices.Notifier.Interfaces;
 
 namespace ProductServices.Notifier.System
 {

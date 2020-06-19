@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using ProductService.DataTransfer.Channel.Factories;
 using ProductServices.Notifier.Data;
 using ProductServices.Notifier.Hubs;
+using ProductServices.Notifier.Interfaces;
 using ProductServices.Notifier.System;
 
 namespace ProductServices.Notifier

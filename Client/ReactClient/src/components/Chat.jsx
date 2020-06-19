@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import {getAuthToken, connectToServer} from '../tools/connectionHelper';
 import Message from './Message.jsx';
+import Filter from './Filter.jsx';
+
 
 class Chat extends Component {
   constructor(props) {
@@ -42,12 +44,7 @@ class Chat extends Component {
     this.state.hubConnection.stop();
   }
 
-  postFilter = (e) => {
-    const {QtyCh, StateCh, Categories} = this.state;
-    this.state.hubConnection
-      .invoke('set_filter', {QtyCh: QtyCh, StateCh: StateCh, Categories: Categories})
-      .catch(err => console.error(err));
-  };
+
 
   renderMessages = (messages) => {
     console.log(messages);
@@ -66,11 +63,8 @@ class Chat extends Component {
   render() {
     return (
       <div className='chat-container'>
-        <div className='chat-group'>
-          <div>Log</div>
-        </div>
         <div className='chat-buttons'>
-          <button onClick={this.postFilter}>Post filter</button>
+          <Filter hubConnection={this.state.hubConnection}/>
         </div>
         <div className='chat-messages'>
           {this.renderMessages(this.state.messages)}

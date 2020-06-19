@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ProductManager.Data;
+using ProductManager.Interfaces;
 using ProductManager.Services;
 
 namespace ProductManager.Controllers

@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using ProductManager.Data;
+using ProductManager.Interfaces;
 using ProductManager.Services;
 using ProductManager.Services.Mongo;
 using ProductService.DataTransfer.Channel.Factories;

@@ -44,7 +44,7 @@ namespace ProductService.DataTransfer.Channel
             if (_queueName == null) throw new InvalidOperationException("The channel was not configured");
 
 
-            var consumer = new AsyncEventingBasicConsumer(_channel);
+            var consumer = new EventingBasicConsumer(_channel);
 
             consumer.Received += async (model, ea) =>
             {

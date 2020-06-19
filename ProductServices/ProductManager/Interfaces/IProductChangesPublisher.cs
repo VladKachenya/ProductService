@@ -1,7 +1,6 @@
-﻿using System.Threading.Tasks;
-using ProductManager.Data;
+﻿using ProductManager.Data;
 
-namespace ProductManager.Services
+namespace ProductManager.Interfaces
 {
     public interface IProductChangesPublisher
     {

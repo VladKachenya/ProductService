@@ -1,6 +1,6 @@
 ﻿using ProductManager.Data;
 
-namespace ProductManager.Services
+namespace ProductManager.Interfaces
 {
     public interface IProductService
     {

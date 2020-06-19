@@ -2,6 +2,10 @@
 {
     internal static class Constants
     {
+
+        public static string ConnectionString => nameof(ConnectionString);
+        public static string ExchangeName => nameof(ExchangeName);
+
         public static string AllowAnyCrosPolicy=> nameof(AllowAnyCrosPolicy);
 
         /// <summary>

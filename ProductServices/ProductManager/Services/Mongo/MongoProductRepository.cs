@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using ProductManager.Data;
+using ProductManager.Interfaces;
 
 namespace ProductManager.Services.Mongo
 {

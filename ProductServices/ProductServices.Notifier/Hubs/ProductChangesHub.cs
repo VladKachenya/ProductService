@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using ProductServices.Notifier.Data;
+using ProductServices.Notifier.Interfaces;
 using ProductServices.Notifier.System;
 
 namespace ProductServices.Notifier.Hubs
